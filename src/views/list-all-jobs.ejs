@@ -55,10 +55,23 @@
           ><%=job.salary%>
         </p>
         <div class="skills p-1">
-          <% job.skills_required.forEach((skill)=> {%>
-          <button class="btn btn-sm btn-outline-info"><%=skill%></button>
-          <%})%>
-        </div>
+  <%
+    let skills = job.skills_required;
+
+    // 🔥 normalize safely
+    if (!Array.isArray(skills)) {
+      if (typeof skills === "string") {
+        skills = skills.split(",");
+      } else {
+        skills = [];
+      }
+    }
+  %>
+
+  <% skills.forEach((skill) => { %>
+    <button class="btn btn-sm btn-outline-info"><%= skill %></button>
+  <% }) %>
+</div>
         <!-- button to see the details of job -->
         <a href="/job/<%=job.id%>" class="btn btn-sm btn-outline-success my-2">
           View details

@@ -1,3 +1,7 @@
+<% if (!data) { %>
+  <h1 class="text-danger text-center">Job not found</h1>
+<% return; } %>
+
 <div class="container my-2">
   <div class="card mb-3">
 
@@ -11,7 +15,7 @@
     <div class="card-body">
       <h1 class="text-center text-success">
         <span class="text-danger"> <%=data.job_designation%> </span> oppertunity
-        in <%=data.job_location.toUpperCase()%> at
+        in <%= data.job_location ? data.job_location.toUpperCase() : "" %> at
         <span class="text-info"> <%=data.company_name%> </span>
       </h1>
       <%if(user){%>
@@ -138,10 +142,23 @@
 
         <div class="container">
           <div class="skills p-1">
-            <% data.skills_required.forEach((skill)=> {%>
-            <button class="btn btn-sm btn-outline-info"><%=skill%></button>
-            <%})%>
-          </div>
+  <%
+    let skills = data.skills_required;
+
+    // 🔥 normalize safely
+    if (!Array.isArray(skills)) {
+      if (typeof skills === "string") {
+        skills = skills.split(",");
+      } else {
+        skills = [];
+      }
+    }
+  %>
+
+  <% skills.forEach((skill) => { %>
+    <button class="btn btn-sm btn-outline-info"><%= skill %></button>
+  <% }) %>
+</div>
 
           <!-- Apply button to apply the job here -->
           <button
