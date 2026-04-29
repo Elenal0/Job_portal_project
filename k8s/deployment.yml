@@ -18,11 +18,18 @@ spec:
         app: hireflow
     spec:
       containers:
-        - name: hireflow
-          image: node:18-alpine
-          ports:
-            - containerPort: 3000
-          env:
-            - name: NODE_ENV
-              value: "production"
-          restartPolicy: Always
+      - name: hireflow
+        image: kess0/hireflow-app:latest # Update with your actual Docker Hub path
+        ports:
+        - containerPort: 3000
+        # Add this to ensure Zero Downtime works during the rollout
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: NODE_ENV
+          value: "production"
+      restartPolicy: Always
