@@ -10,6 +10,8 @@ jobs:
   build-test:
     name: 1-Install and Test
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,6 +31,8 @@ jobs:
   docker-scan-push:
     name: 2-Docker Build, Trivy Scan and Push
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     needs: build-test
     steps:
       - name: Checkout code
@@ -60,6 +64,8 @@ jobs:
   deploy-staging:
     name: 3-Deploy to Staging
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     needs: docker-scan-push
     if: github.ref == 'refs/heads/main'
     steps:
